@@ -1,0 +1,29 @@
+body {
+        margin-left:2 px;
+}
+p {
+        font-family: sans-serif;
+        padding:1em;
+}
+
+
+button{
+	margin:5px;
+	border : none;
+	height : 110px;
+	width:280px;
+	font-size: 25px;
+	vertical-align:middle;
+	text-align:middle;
+	background-image:url(bouton.png);
+ }
+button:hover {
+	position:relative;
+	left:-2px;
+	top: 2px
+ }
+
+#container{
+    border: solid 2px rgb(0, 0, 0);
+
+} 
