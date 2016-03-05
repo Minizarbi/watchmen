@@ -1,39 +1,27 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <title>Labo-Rats-ory</title>
         <meta charset="utf-8">
-<link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-</head>
+    <body id="body">
+        <div id="container">
+            <canvas id="game" height="0" width="0"></canvas>
+        </div>
 
-<body id="body">
+        <div id="score"></div>
 
-<div id="container"><canvas height="0" width="0"></canvas></div>
+        <div id="menu">
+            <button id="level">Level</button>
+            <button id="pause">Pause</button>
+            <button id="retry">Retry</button>
+            <button id="help">Help</button>
+        </div>
 
-<div id="score">
-</div>
-<div id="menu">
-	  <button id="level">
-        Level
-      </button>
-      <button id="pause">
-        Pause
-      </button>
-      <button id="retry">
-        Retry
-      </button>
-	  <button id="help">
-        Help
-      </button>
-</div>
-
-
-<script src='three.js-master/build/three.min.js'></script>
-
-
-<script type="text/javascript" src="main.js">
-</script>
-
-</body>
+        <script src='three.js-master/build/three.min.js'></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
 </html>
