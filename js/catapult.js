@@ -35,16 +35,22 @@ var stick = new THREE.Mesh(geometry, material);
 
 stick.position.x = -0.5;
 
+geometry = new THREE.CylinderGeometry(radius + 0.1, radius, 0.1);
+var bucket = new THREE.Mesh(geometry, material);
+
+bucket.position.x = -1;
+
 /* Using an object to change the rotation center */
 var catapult = new THREE.Object3D();
 catapult.add(stick);
+catapult.add(bucket);
 
 catapult.rotation.z = - Math.PI / 4;
 
 scene.add(catapult);
 
 geometry = new THREE.SphereGeometry(radius);
-ballMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000});
+var ballMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000});
 var ball = new THREE.Mesh(geometry, ballMaterial);
 updatePosition(ball, missile);
 
@@ -61,7 +67,7 @@ camera.position.z = 5;
 /*
  * Function to change the catapult color when selected = true
  */
-this.selectCatapult = function(selected) {
+function selectCatapult(selected) {
 	if (selected) {
 		material.setValues({color: 0x00FF00});
 	} else {
@@ -103,20 +109,28 @@ function onMouseDown(event) {
 }
 
 function onMouseUp(event) {
-
-	selectCatapult(false);
+	/* Set the catapult to initial state */
 	catapult.rotation.z = - Math.PI / 4;
+	
+	/* Unstick the missile from stick */
 	catapult.updateMatrixWorld();
 	var vector = new THREE.Vector3();
 	vector.setFromMatrixPosition(ball.matrixWorld);
-	missile.position.copy(vector);
 	catapult.remove(ball);
-	ball.position.copy(missile.position);
+	missile.position.copy(vector);
+	ball.position.copy(vector);
 	scene.add(ball);
-	/* Unstick it to the stick */
+
+	/* Unfreeze the missile */
 	missile.wakeUp();
-	/* Here 10 is arbitrary */
+
+	/* Set the missile speed depending on the catapult strength
+	Here 10 is arbitrary value */
 	missile.velocity = new CANNON.Vec3(10 * catapultStrength, 10 * catapultStrength, 0);
+	
+	/* Unpaint the catapult */
+	selectCatapult(false);
+	
 	pressed = false;
 }
 
