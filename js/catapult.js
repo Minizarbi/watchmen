@@ -1,6 +1,8 @@
+var gravity = -10;
+
 /* Create world with gravity */
 var world = new CANNON.World();
-world.gravity.set(0,-10,0);
+world.gravity.set(0,gravity,0);
 
 /* Use default algorithm to compute collisions */
 world.broadphase = new CANNON.NaiveBroadphase();
