@@ -1,15 +1,15 @@
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+scene = new THREE.Scene();
+camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-var renderer = new THREE.WebGLRenderer();
+renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-var orig = new THREE.Vector3(-2, 0, 0);
+orig = new THREE.Vector3(-2, 0, 0);
 var speed = new THREE.Vector3(5, 5, 0);
-var gravity = -10;
-var timeStep = 1.0 / 60.0;
-var pointNumber = 60;
+gravity = -10;
+timeStep = 1.0 / 10.0;
+pointNumber = 10;
 
 function createPointArray(origPoint, origSpeed, gravity, timeStep, pointNumber) {
 	var pointArray = [];
@@ -29,10 +29,10 @@ function createPointArray(origPoint, origSpeed, gravity, timeStep, pointNumber) 
 var curve = new THREE.SplineCurve3(createPointArray(orig, speed, gravity, timeStep, pointNumber));
 
 var geometry = new THREE.Geometry();
-geometry.vertices = curve.getPoints(60);
+geometry.vertices = curve.getPoints(10);
 geometry.computeLineDistances();
 var material = new THREE.LineDashedMaterial({ color: 0xffffff, linewidth: 2, scale: 5, dashSize: 1, gapSize: 0.5 });
-var trajectory = new THREE.Line(geometry, material);
+trajectory = new THREE.Line(geometry, material);
 
 scene.add(trajectory);
 
@@ -43,3 +43,28 @@ function render() {
 	renderer.render(scene, camera);
 }
 render();
+
+function changeTrajectory(speedX, speedY) {
+	scene.remove(trajectory);
+
+	var speed = new THREE.Vector3(speedX, speedY, 0);
+
+	var curve = new THREE.SplineCurve3(createPointArray(orig, speed, gravity, timeStep, pointNumber));
+
+	var geometry = new THREE.Geometry();
+	geometry.vertices = curve.getPoints(60);
+	geometry.computeLineDistances();
+	var material = new THREE.LineDashedMaterial({ color: 0xffffff, linewidth: 2, scale: 5, dashSize: 1, gapSize: 0.5 });
+	trajectory = new THREE.Line(geometry, material);
+
+	scene.add(trajectory);
+}
+
+originSpeedX = document.getElementById("originSpeedX");
+originSpeedY = document.getElementById("originSpeedY");
+originSpeedX.addEventListener("input", function(e) {
+	changeTrajectory(originSpeedX.valueAsNumber, originSpeedY.valueAsNumber);
+});
+originSpeedY.addEventListener("input", function(e) {
+	changeTrajectory(originSpeedX.valueAsNumber, originSpeedY.valueAsNumber);
+});
