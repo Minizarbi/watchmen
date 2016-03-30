@@ -12,7 +12,7 @@ function init(){
     // renderer = new THREE.CanvasRenderer();
     renderer.setSize( window.innerWidth*0.98, window.innerHeight*0.85 );
     document.getElementById('container').appendChild(renderer.domElement);
-    renderer.setClearColor( 0xffffff, 1 );
+    renderer.setClearColor( 0xcef0f9, 1 );
     // on initialise la scène
     scene = new THREE.Scene();
 
@@ -22,6 +22,7 @@ function init(){
     scene.add(camera);
     container = document.createElement( 'div' );
     document.body.appendChild( container );
+	
     //création afficheur lvl
     var infoLvl = document.createElement( 'div' );
     infoLvl.style.position = 'absolute';
@@ -31,6 +32,7 @@ function init(){
     infoLvl.style.fontSize ='25px';
     infoLvl.innerHTML = 'Level 1';
     container.appendChild( infoLvl );
+	
     //création afficheur Score
     var infoScore = document.createElement( 'div' );
     infoScore.style.position = 'absolute';
@@ -152,22 +154,49 @@ function init(){
     scene.add( sphere );
     //est-on en train de bouger la balle avec le click enfoncé ? 
     mouseDragg=false;
+	
     //garde les informations X et Y au moment où l'on lance la balle
     initialX=0;
     initialY=0;
+	
+	/*
     var geometry = new THREE.Geometry();
-    point =new THREE.Vector2( -600, 0 );
+    point =new THREE.Vector2( 600, 0 );
     geometry.vertices.push(
     new THREE.Vector2( -600, 0 )
 
     );
     geometry.vertices.push(point);
     geometry.computeLineDistances();
-    var lineMaterial = new THREE.LineBasicMaterial({color: 0x000000});
+    var lineMaterial = new THREE.LineBasicMaterial({color: 0x000000, linewidth: 2 });
     line = new THREE.Line( geometry,  material );
-    scene.add(line);
+    scene.add(line);*/
+	/*
+	var lineGeometry = new THREE.Geometry();
+    var vertArray = lineGeometry.vertices;
+    vertArray.push( new THREE.Vector3(-600,0,0), new THREE.Vector3(0, 0, 0) );
+    lineGeometry.computeLineDistances();
+    var lineMaterial = new THREE.LineDashedMaterial( { color: 0x000000, dashSize: 2, gapSize: 2 } );
+    line = new THREE.Line( lineGeometry, lineMaterial );
+    scene.add(line);*/
+	
+	
     //la balle est-elle en mouvement ?
     onMovement=false;
+	
+	//ajout du design de la fronde
+	// Cylinder Geometry params : CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
+	var geometryPilier = new THREE.CylinderGeometry( 20, 20, 550, 16 );
+	var materialPilier = new THREE.MeshBasicMaterial( {color: 0xfff000} );
+	var cylinderPilier = new THREE.Mesh( geometryPilier, materialPilier );
+	
+	cylinderPilier.position.setX(-600);
+	cylinderPilier.position.setY(-300);
+	
+	var edgesPiller = new THREE.EdgesHelper( cylinderPilier, 0x000000 );
+	
+	scene.add( cylinderPilier );
+	scene.add( edgesPiller );
 
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     document.addEventListener( 'mouseup', onDocumentMouseUp, false );
@@ -178,8 +207,11 @@ function init(){
     scene.add( lumiere );
 
     renderer.render( scene, camera );
+<<<<<<< HEAD
+=======
 	
 	
+>>>>>>> efef7532ffdc75c5805df59904152c843a031106
 }
 
 function onDocumentMouseDown( event ) {
@@ -195,8 +227,13 @@ function onDocumentMouseDown( event ) {
     onMovement=false;
     point.position.x=pos.x;
     point.position.y=pos.y;
+	
+	line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
+    line.geometry.computeLineDistances();
+    line.geometry.lineDistancesNeedUpdate = true;
+	scene.add(line);
+	renderer.render( scene, camera );
 }
-
 
 function onDocumentMouseUp( event ) {
     mouseDragg= false;
@@ -212,6 +249,9 @@ function onDocumentMouseUp( event ) {
     speedX=(-600-initialX)/20;
     speedY=(0-initialY)/20;
     onMovement=true;
+	scene.remove(line);
+	renderer.render( scene, camera );
+
 }
 
 function onDocumentMouseMove( event ) {
@@ -225,8 +265,14 @@ function onDocumentMouseMove( event ) {
 
 	sphere.position.x= pos.x;
 	sphere.position.y= pos.y;
+	
 	point.position.x=pos.x;
 	point.position.y=pos.y;
+	
+	line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
+    line.geometry.computeLineDistances();
+    line.geometry.lineDistancesNeedUpdate = true;
+	renderer.render( scene, camera );
     }
 }
 
@@ -241,5 +287,9 @@ function animate(){
 	sphere.position.y=oldY+speedY;
     }
     renderer.render( scene, camera );
+<<<<<<< HEAD
+}
+=======
 }
 
+>>>>>>> efef7532ffdc75c5805df59904152c843a031106
