@@ -42,6 +42,9 @@ function init(){
     infoScore.innerHTML = 'Score : 0';
     container.appendChild( infoScore );
 
+
+
+
 	var edges ; 
 	var obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
 	var obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
