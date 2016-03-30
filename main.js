@@ -44,7 +44,93 @@ function init(){
     infoScore.innerHTML = 'Score : 0';
     container.appendChild( infoScore );
 
-    // on créé la sphère et on lui applique une texture sous forme d’image
+	var edges ; 
+	var obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
+	var obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(60);
+    mesh.position.setY(-400);
+	scene.add(  mesh );
+	obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(325);
+    mesh.position.setY(-400);
+	scene.add(  mesh );
+	obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(625);
+    mesh.position.setY(-400);
+	scene.add(  mesh );
+	obstacle =  new THREE.CubeGeometry( 250 , 50 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(875);
+    mesh.position.setY(-300);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(775);
+    mesh.position.setY(-400);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	
+	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(975);
+    mesh.position.setY(-150);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	obstacle =  new THREE.CubeGeometry( 250 , 50 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(875);
+    mesh.position.setY(-50);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(775);
+    mesh.position.setY(-150);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	
+	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(975);
+    mesh.position.setY(-400);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
+	obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
+	mesh = new THREE.Mesh( obstacle, obsMaterial );
+	mesh.position.setX(625);
+    mesh.position.setY(-150);
+    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+	scene.add(  mesh );
+	scene.add( edges );
+	
+	
+	
+    // on créé la cube et on lui applique une texture sous forme d’image
     var geometry = new THREE.CubeGeometry(window.innerWidth*1.3, 100, 200 );
     var material = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('texture-herbe.png') } );
     mesh = new THREE.Mesh( geometry, material );
@@ -118,6 +204,8 @@ function init(){
     scene.add( lumiere );
 
     renderer.render( scene, camera );
+	
+	
 }
 
 function onDocumentMouseDown( event ) {
@@ -195,3 +283,4 @@ function animate(){
     }
     renderer.render( scene, camera );
 }
+
