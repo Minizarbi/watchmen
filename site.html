@@ -26,8 +26,6 @@ var appCache = window.applicationCache;
 
 appCache.update(); // Attempt to update the user's cache.
 
-...
-
 if (appCache.status == window.applicationCache.UPDATEREADY) {
   appCache.swapCache();  // The fetch was successful, swap in the new cache.
 }
@@ -114,15 +112,11 @@ footer{
             <button id="pause">Pause</button>
             <button id="retry">Retry</button>
 			<button id="help" data-toggle="modal" data-target="#id-popup"> Help</button>
+			
+			<!-- lien de téléchargement -->
+			
+			<a href="data:text/plain;charset=UTF-8,Score : 2" download="le_fichier.txt" id="boutonBlue" class="btn btn-default">Le fichier</a>
 		</div>
-		
-		<!-- lien de téléchargement
-		
-		<div id="telechargement">
-			<a href="le lien.html">Le lien</a>
-		</div>
-		
-		-->
 		
         <script src='three.js-master/build/three.min.js'></script>
         <script type="text/javascript" src="main.js"></script>
