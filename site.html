@@ -1,13 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html manifest="example.appcache" >
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <title>Labo-Rats-ory</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
+        
+<link rel="stylesheet" href="bootstrap-3.2.0-dist/css/bootstrap.css"> 
+<link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="bootstrap-3.2.0-dist/js/jquery-1.10.2.js"></script> 
+<script src="bootstrap-3.2.0-dist/js/bootstrap.js"></script> 
+        
+<script type="text/javascript"> 
+$(document).ready(function()
+{ 
+    $("#id-popup").modal("hide");// affiche la popup au chargement de la page
+}); 
+
+function action(){
+	$("#id-popup").modal("hide");
+}
+
+var appCache = window.applicationCache;
+
+appCache.update(); // Attempt to update the user's cache.
+
+...
+
+if (appCache.status == window.applicationCache.UPDATEREADY) {
+  appCache.swapCache();  // The fetch was successful, swap in the new cache.
+}
+
+// Check if a new cache is available on page load.
+window.addEventListener('load', function(e) {
+
+  window.applicationCache.addEventListener('updateready', function(e) {
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+      // Browser downloaded a new app cache.
+      if (confirm('A new version of this site is available. Load it?')) {
+        window.location.reload();
+      }
+    } else {
+      // Manifest didn't changed. Nothing new to server.
+    }
+  }, false);
+
+}, false);
+</script>
+
+<style>
+body{
+	font-size: 12px;
+	font-family: Arial;
+    padding-top: 70px;/* décalage pour le menu de navigation */
+}
+
+footer{
+  margin-top: 30px;
+}
+
+
+</style>
+        
+        
     </head>
 
     <body id="body">
+		
+		
+    <!-- construction de la popup 
+          data-backdrop="false" pour supprimer le voile au-dessus de la popup
+          data-keyboard="false" pour supprimer la touche Echap --> 
+    <div class="modal fade " id="id-popup" tabindex="-1" role="dialog" aria-labelledby="titrePopUp" aria-hidden="true"> 
+    
+      <div class="modal-dialog modal-lg"> 
+
+        <div class="modal-content"> 
+            
+          <!-- le titre de la popup --> 
+          <div class="modal-header"> 
+          <h4 class="modal-title" id="titrePopUp">Bienvenue sur l'aide de Super Sciences 
+          <!-- lla croix de fermeture de la popup --> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> </h4>
+          </div> 
+          
+          <!-- le contenu HTML de la popup --> 
+          <div class="modal-body"> 
+          <p class="lead"> Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. </p> 
+          <p>Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker</p> 
+          </div>
+          
+          <!-- le pied de page de la popup --> 
+          <div class="modal-footer"> 
+          <a onClick="action();" = class="btn btn-primary pull-left">Retour au Jeu</a> 
+          </div> 
+
+        </div> 
+
+      </div> 
+		
+    </div>
+
+		
         <div id="container">
             <canvas id="game" height="0" width="0"></canvas>
         </div>
@@ -18,8 +113,8 @@
             <button id="level">Level</button>
             <button id="pause">Pause</button>
             <button id="retry">Retry</button>
-            <button id="help">Help</button>
-        </div>
+			<button id="help" data-toggle="modal" data-target="#id-popup"> Help</button>
+		</div>
 
         <script src='three.js-master/build/three.min.js'></script>
         <script type="text/javascript" src="main.js"></script>

@@ -44,7 +44,7 @@ function init(){
 
     // on créé la sphère et on lui applique une texture sous forme d’image
     var geometry = new THREE.CubeGeometry(window.innerWidth*1.3, 100, 200 );
-    var material = new THREE.MeshBasicMaterial( { color:"#2194ce" } );
+    var material = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('texture-herbe.png') } );
     mesh = new THREE.Mesh( geometry, material );
     mesh.position.setX(30);
     mesh.position.setY(-600);
@@ -105,6 +105,7 @@ function onDocumentMouseDown( event ) {
     point.position.x=pos.x;
     point.position.y=pos.y;
 }
+
 
 function onDocumentMouseUp( event ) {
     mouseDragg= false;
