@@ -207,11 +207,7 @@ function init(){
     scene.add( lumiere );
 
     renderer.render( scene, camera );
-<<<<<<< HEAD
-=======
-	
-	
->>>>>>> efef7532ffdc75c5805df59904152c843a031106
+
 }
 
 function onDocumentMouseDown( event ) {
@@ -287,9 +283,7 @@ function animate(){
 	sphere.position.y=oldY+speedY;
     }
     renderer.render( scene, camera );
-<<<<<<< HEAD
-}
-=======
 }
 
->>>>>>> efef7532ffdc75c5805df59904152c843a031106
+
+
