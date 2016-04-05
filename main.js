@@ -1,289 +1,313 @@
-
-var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY,mouseDragg, line,onMovement,point;
+var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY, mouseDragg, line, onMovement, point;
+var missile, timeStep, gravity, world;
 
 init();
 animate();
 
-function init(){
+function init() {
+    gravity = -1000;
+
+    /* Create world with gravity */
+    world = new CANNON.World();
+    world.gravity.set(0, gravity, 0);
+
+    /* Use default algorithm to compute collisions */
+    world.broadphase = new CANNON.NaiveBroadphase();
+
+    /* Time step in seconds */
+    timeStep = 1.0 / 60.0;
+
     // on initialise le moteur de rendu sur le canvas game
     renderer = new THREE.WebGLRenderer({canvas: document.getElementById("game")});
 
     // si WebGL ne fonctionne pas sur votre navigateur vous pouvez utiliser le moteur de rendu Canvas à la place
     // renderer = new THREE.CanvasRenderer();
-    renderer.setSize( window.innerWidth*0.98, window.innerHeight*0.85 );
+    renderer.setSize(window.innerWidth * 0.98, window.innerHeight * 0.85);
     document.getElementById('container').appendChild(renderer.domElement);
-    renderer.setClearColor( 0xcef0f9, 1 );
+    renderer.setClearColor(0xcef0f9, 1);
     // on initialise la scène
     scene = new THREE.Scene();
 
     // on initialise la camera que l’on place ensuite sur la scène
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.set(0, 0, 1500);
     scene.add(camera);
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
-	
+    container = document.createElement('div');
+    document.body.appendChild(container);
+
     //création afficheur lvl
-    var infoLvl = document.createElement( 'div' );
+    var infoLvl = document.createElement('div');
     infoLvl.style.position = 'absolute';
     infoLvl.style.top = '10px';
     infoLvl.style.width = '100%';
     infoLvl.style.textAlign = 'left';
-    infoLvl.style.fontSize ='25px';
+    infoLvl.style.fontSize = '25px';
     infoLvl.innerHTML = 'Level 1';
-    container.appendChild( infoLvl );
-	
+    container.appendChild(infoLvl);
+
     //création afficheur Score
-    var infoScore = document.createElement( 'div' );
+    var infoScore = document.createElement('div');
     infoScore.style.position = 'absolute';
     infoScore.style.top = '10px';
     infoScore.style.right = '30px';
     infoScore.style.width = '100%';
     infoScore.style.textAlign = 'right';
-    infoScore.style.fontSize ='25px';
+    infoScore.style.fontSize = '25px';
     infoScore.innerHTML = 'Score : 0';
-    container.appendChild( infoScore );
+    container.appendChild(infoScore);
 
 
-
-
-	var edges ; 
-	var obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
-	var obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(60);
+    var edges;
+    var obstacle = new THREE.CubeGeometry(250, 250, 100);
+    var obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(60);
     mesh.position.setY(-400);
-	scene.add(  mesh );
-	obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(325);
+    scene.add(mesh);
+    obstacle = new THREE.CubeGeometry(250, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(325);
     mesh.position.setY(-400);
-	scene.add(  mesh );
-	obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(625);
+    scene.add(mesh);
+    obstacle = new THREE.CubeGeometry(250, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(625);
     mesh.position.setY(-400);
-	scene.add(  mesh );
-	obstacle =  new THREE.CubeGeometry( 250 , 50 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(875);
+    scene.add(mesh);
+    obstacle = new THREE.CubeGeometry(250, 50, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(875);
     mesh.position.setY(-300);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(775);
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+    obstacle = new THREE.CubeGeometry(50, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(775);
     mesh.position.setY(-400);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	
-	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(975);
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+
+    obstacle = new THREE.CubeGeometry(50, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(975);
     mesh.position.setY(-150);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	obstacle =  new THREE.CubeGeometry( 250 , 50 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(875);
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+    obstacle = new THREE.CubeGeometry(250, 50, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(875);
     mesh.position.setY(-50);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(775);
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+    obstacle = new THREE.CubeGeometry(50, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(775);
     mesh.position.setY(-150);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	
-	obstacle =  new THREE.CubeGeometry( 50 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(975);
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+
+    obstacle = new THREE.CubeGeometry(50, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(975);
     mesh.position.setY(-400);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(625);
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+    obstacle = new THREE.CubeGeometry(250, 250, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(625);
     mesh.position.setY(-150);
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
-	scene.add(  mesh );
-	scene.add( edges );
-	
-	
-	
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+
     // on créé la cube et on lui applique une texture sous forme d’image
-    var geometry = new THREE.CubeGeometry(window.innerWidth*1.3, 100, 200 );
-    var material = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('texture-herbe.png') } );
-    mesh = new THREE.Mesh( geometry, material );
+    var geometry = new THREE.CubeGeometry(window.innerWidth * 1.3, 100, 200);
+    var material = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('texture-herbe.png')});
+    mesh = new THREE.Mesh(geometry, material);
     mesh.position.setX(30);
     mesh.position.setY(-600);
 
-    edges = new THREE.EdgesHelper(  mesh, 0x000000 );
+    edges = new THREE.EdgesHelper(mesh, 0x000000);
 
-    scene.add(  mesh );
-    scene.add( edges );
+    scene.add(mesh);
+    scene.add(edges);
 
-    var geometrySphere = new THREE.SphereGeometry( 50, 32, 10 );
-    var materialSphere = new THREE.MeshBasicMaterial( {color: "#2194ce" } );
-    sphere = new THREE.Mesh(  geometrySphere, materialSphere );
+    var geometrySphere = new THREE.SphereGeometry(50, 32, 10);
+    var materialSphere = new THREE.MeshBasicMaterial({color: "#2194ce"});
+    sphere = new THREE.Mesh(geometrySphere, materialSphere);
     sphere.position.setX(-600);
     sphere.position.setY(0);
 
-    scene.add( sphere );
+    scene.add(sphere);
+
+    var mass = 5, radius = 50;
+    var sphereShape = new CANNON.Sphere(radius);
+    missile = new CANNON.Body({mass: mass, shape: sphereShape});
+    missile.position.copy(sphere.position);
+    world.add(missile);
+
     //est-on en train de bouger la balle avec le click enfoncé ? 
-    mouseDragg=false;
-	
+    mouseDragg = false;
+
     //garde les informations X et Y au moment où l'on lance la balle
-    initialX=0;
-    initialY=0;
-	
-	/*
-    var geometry = new THREE.Geometry();
-    point =new THREE.Vector2( 600, 0 );
-    geometry.vertices.push(
-    new THREE.Vector2( -600, 0 )
+    initialX = 0;
+    initialY = 0;
 
-    );
-    geometry.vertices.push(point);
-    geometry.computeLineDistances();
-    var lineMaterial = new THREE.LineBasicMaterial({color: 0x000000, linewidth: 2 });
-    line = new THREE.Line( geometry,  material );
-    scene.add(line);*/
-	/*
-	var lineGeometry = new THREE.Geometry();
-    var vertArray = lineGeometry.vertices;
-    vertArray.push( new THREE.Vector3(-600,0,0), new THREE.Vector3(0, 0, 0) );
-    lineGeometry.computeLineDistances();
-    var lineMaterial = new THREE.LineDashedMaterial( { color: 0x000000, dashSize: 2, gapSize: 2 } );
-    line = new THREE.Line( lineGeometry, lineMaterial );
-    scene.add(line);*/
-	
-	
+    /*
+     var geometry = new THREE.Geometry();
+     point =new THREE.Vector2( 600, 0 );
+     geometry.vertices.push(
+     new THREE.Vector2( -600, 0 )
+
+     );
+     geometry.vertices.push(point);
+     geometry.computeLineDistances();
+     var lineMaterial = new THREE.LineBasicMaterial({color: 0x000000, linewidth: 2 });
+     line = new THREE.Line( geometry,  material );
+     scene.add(line);*/
+    /*
+     var lineGeometry = new THREE.Geometry();
+     var vertArray = lineGeometry.vertices;
+     vertArray.push( new THREE.Vector3(-600,0,0), new THREE.Vector3(0, 0, 0) );
+     lineGeometry.computeLineDistances();
+     var lineMaterial = new THREE.LineDashedMaterial( { color: 0x000000, dashSize: 2, gapSize: 2 } );
+     line = new THREE.Line( lineGeometry, lineMaterial );
+     scene.add(line);*/
+
+
     //la balle est-elle en mouvement ?
-    onMovement=false;
-	
-	//ajout du design de la fronde
-	// Cylinder Geometry params : CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
-	var geometryPilier = new THREE.CylinderGeometry( 20, 20, 550, 16 );
-	var materialPilier = new THREE.MeshBasicMaterial( {color: 0xfff000} );
-	var cylinderPilier = new THREE.Mesh( geometryPilier, materialPilier );
-	
-	cylinderPilier.position.setX(-600);
-	cylinderPilier.position.setY(-300);
-	
-	var edgesPiller = new THREE.EdgesHelper( cylinderPilier, 0x000000 );
-	
-	scene.add( cylinderPilier );
-	scene.add( edgesPiller );
+    onMovement = false;
 
-    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-    document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-    document.addEventListener('mousemove',onDocumentMouseMove, false);
+    //ajout du design de la fronde
+    // Cylinder Geometry params : CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
+    var geometryPilier = new THREE.CylinderGeometry(20, 20, 550, 16);
+    var materialPilier = new THREE.MeshBasicMaterial({color: 0xfff000});
+    var cylinderPilier = new THREE.Mesh(geometryPilier, materialPilier);
+
+    cylinderPilier.position.setX(-600);
+    cylinderPilier.position.setY(-300);
+
+    var edgesPiller = new THREE.EdgesHelper(cylinderPilier, 0x000000);
+
+    scene.add(cylinderPilier);
+    scene.add(edgesPiller);
+
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
+    document.addEventListener('mouseup', onDocumentMouseUp, false);
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
     // on ajoute une lumière blanche
-    var lumiere = new THREE.DirectionalLight( 0xffffff, 1.0 );
-    lumiere.position.set( 0, 0, 400 );
-    scene.add( lumiere );
+    var lumiere = new THREE.DirectionalLight(0xffffff, 1.0);
+    lumiere.position.set(0, 0, 400);
+    scene.add(lumiere);
 
-    renderer.render( scene, camera );
+    renderer.render(scene, camera);
 
 }
 
-function onDocumentMouseDown( event ) {
-    mouseDragg= true;
+function onDocumentMouseDown(event) {
+    mouseDragg = true;
     var vector = new THREE.Vector3();
-    vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-    vector.unproject( camera );
-    var dir = vector.sub( camera.position ).normalize();
-    var distance = - camera.position.z / dir.z;
-    var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-    sphere.position.x=pos.x;
-    sphere.position.y=pos.y;
-    onMovement=false;
-    point.position.x=pos.x;
-    point.position.y=pos.y;
-	
-	line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
+    vector.set(( event.clientX / window.innerWidth ) * 2 - 1, -(event.clientY / window.innerHeight ) * 2 + 1, 0);
+    vector.unproject(camera);
+    var dir = vector.sub(camera.position).normalize();
+    var distance = -camera.position.z / dir.z;
+    var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+    sphere.position.x = pos.x;
+    sphere.position.y = pos.y;
+    onMovement = false;
+    point.position.x = pos.x;
+    point.position.y = pos.y;
+
+    line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
     line.geometry.computeLineDistances();
     line.geometry.lineDistancesNeedUpdate = true;
-	scene.add(line);
-	renderer.render( scene, camera );
+    scene.add(line);
+    renderer.render(scene, camera);
 }
 
-function onDocumentMouseUp( event ) {
-    mouseDragg= false;
+function onDocumentMouseUp(event) {
+    mouseDragg = false;
 
     var vector = new THREE.Vector3();
-    vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-    vector.unproject( camera );
-    var dir = vector.sub( camera.position ).normalize();
-    var distance = - camera.position.z / dir.z;
-    var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-    initialX=pos.x;
-    initialY=pos.y;
-    speedX=(-600-initialX)/20;
-    speedY=(0-initialY)/20;
-    onMovement=true;
-	scene.remove(line);
-	renderer.render( scene, camera );
+    vector.set(( event.clientX / window.innerWidth ) * 2 - 1, -(event.clientY / window.innerHeight ) * 2 + 1, 0);
+    vector.unproject(camera);
+    var dir = vector.sub(camera.position).normalize();
+    var distance = -camera.position.z / dir.z;
+    var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+    initialX = pos.x;
+    initialY = pos.y;
+    speedX = (-600 - initialX) * 5;
+    speedY = (0 - initialY) * 5;
+    onMovement = true;
+    scene.remove(line);
+    renderer.render(scene, camera);
 
+    missile.velocity = new CANNON.Vec3(speedX, speedY, 0);
 }
 
-function onDocumentMouseMove( event ) {
-    if(mouseDragg==true){	
-	var vector = new THREE.Vector3();
-	vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-	vector.unproject( camera );
-	var dir = vector.sub( camera.position ).normalize();
-	var distance = - camera.position.z / dir.z;
-	var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
+function onDocumentMouseMove(event) {
+    if (mouseDragg == true) {
+        var vector = new THREE.Vector3();
+        vector.set(( event.clientX / window.innerWidth ) * 2 - 1, -(event.clientY / window.innerHeight ) * 2 + 1, 0);
+        vector.unproject(camera);
+        var dir = vector.sub(camera.position).normalize();
+        var distance = -camera.position.z / dir.z;
+        var pos = camera.position.clone().add(dir.multiplyScalar(distance));
 
-	sphere.position.x= pos.x;
-	sphere.position.y= pos.y;
-	
-	point.position.x=pos.x;
-	point.position.y=pos.y;
-	
-	line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
-    line.geometry.computeLineDistances();
-    line.geometry.lineDistancesNeedUpdate = true;
-	renderer.render( scene, camera );
+        sphere.position.x = pos.x;
+        sphere.position.y = pos.y;
+
+        missile.position.x = pos.x;
+        missile.position.y = pos.y;
+
+        line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
+        line.geometry.computeLineDistances();
+        line.geometry.lineDistancesNeedUpdate = true;
+        renderer.render(scene, camera);
     }
 }
 
-function animate(){
-    requestAnimationFrame( animate );
-    if(onMovement){
-	var oldX=sphere.position.x;
-	var oldY=sphere.position.y;
+function animate() {
+    requestAnimationFrame(animate);
+    if (onMovement) {
+        updatePhysics();
+        /*
+        var oldX = sphere.position.x;
+        var oldY = sphere.position.y;
 
-	sphere.position.x=oldX+speedX;
+        sphere.position.x = oldX + speedX;
 
-	sphere.position.y=oldY+speedY;
+        sphere.position.y = oldY + speedY;
+        */
     }
-    renderer.render( scene, camera );
+    renderer.render(scene, camera);
 }
 
+function updatePhysics() {
+    world.step(timeStep);
+    sphere.position.copy(missile.position);
+}
 
 

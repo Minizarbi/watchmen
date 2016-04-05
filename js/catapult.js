@@ -54,13 +54,7 @@ scene.add(catapult);
 geometry = new THREE.SphereGeometry(radius);
 var ballMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000});
 var ball = new THREE.Mesh(geometry, ballMaterial);
-updatePosition(ball, missile);
-
-function updatePosition(image, physic) {
-	image.position.x = physic.position.x;
-	image.position.y = physic.position.y;
-	image.position.z = physic.position.z;
-}
+ball.position.copy(missile.position);
 
 catapult.position.x = -2;
 
