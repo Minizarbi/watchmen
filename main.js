@@ -5,6 +5,7 @@ init();
 animate();
 
 function init(){
+	
     // on initialise le moteur de rendu sur le canvas game
     renderer = new THREE.WebGLRenderer({canvas: document.getElementById("game")});
 
@@ -46,7 +47,7 @@ function init(){
 
 
 
-
+	// définition d'un obstacle en bois
 	var edges ; 
 	var obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
 	var obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
@@ -66,6 +67,8 @@ function init(){
 	mesh.position.setX(625);
     mesh.position.setY(-400);
 	scene.add(  mesh );
+	
+	// définition d'un obstacle en petit morceau ;
 	obstacle =  new THREE.CubeGeometry( 250 , 50 ,100 ) ;
 	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
 	mesh = new THREE.Mesh( obstacle, obsMaterial );
@@ -178,7 +181,8 @@ function init(){
     lineGeometry.computeLineDistances();
     var lineMaterial = new THREE.LineDashedMaterial( { color: 0x000000, dashSize: 2, gapSize: 2 } );
     line = new THREE.Line( lineGeometry, lineMaterial );
-    scene.add(line);*/
+    scene.add(line);
+    */
 	
 	
     //la balle est-elle en mouvement ?
@@ -197,7 +201,7 @@ function init(){
 	
 	scene.add( cylinderPilier );
 	scene.add( edgesPiller );
-
+	// ajout des evenement souris
     document.addEventListener( 'mousedown', onDocumentMouseDown, false );
     document.addEventListener( 'mouseup', onDocumentMouseUp, false );
     document.addEventListener('mousemove',onDocumentMouseMove, false);
@@ -287,6 +291,7 @@ function onDocumentMouseMove( event ) {
     }
 }
 
+// lance les animations 3D
 function animate(){
     requestAnimationFrame( animate );
     if(onMovement){
