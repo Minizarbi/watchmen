@@ -57,37 +57,61 @@ function init() {
     container.appendChild(infoScore);
 
 
-
-	// définition d'un obstacle en bois
-	var edges ; 
-	var obstacle =  new THREE.CubeGeometry( 250 , 250 ,100 ) ;
-	var obsMaterial = new THREE.MeshBasicMaterial( { map : THREE.ImageUtils.loadTexture('bois.jpeg') } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(60);
+    // définition d'un obstacle en bois
+    var edges;
+    var obstacle = new THREE.CubeGeometry(250, 250, 100);
+    var obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(60);
     mesh.position.setY(-400);
     scene.add(mesh);
+
+    var mass = 0;
+    var boxShape = new CANNON.Box(new CANNON.Vec3(125, 125, 125));
+    var box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
+
     obstacle = new THREE.CubeGeometry(250, 250, 100);
     obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
     mesh = new THREE.Mesh(obstacle, obsMaterial);
     mesh.position.setX(325);
     mesh.position.setY(-400);
     scene.add(mesh);
+
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
+
     obstacle = new THREE.CubeGeometry(250, 250, 100);
     obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
     mesh = new THREE.Mesh(obstacle, obsMaterial);
     mesh.position.setX(625);
     mesh.position.setY(-400);
-	scene.add(  mesh );
-	
-	// définition d'un obstacle en petit morceau ;
-	obstacle =  new THREE.CubeGeometry( 250 , 50 ,100 ) ;
-	obsMaterial = new THREE.MeshBasicMaterial( { color : "#ce873e" } ) ; 
-	mesh = new THREE.Mesh( obstacle, obsMaterial );
-	mesh.position.setX(875);
+    scene.add(mesh);
+
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
+
+    // définition d'un obstacle en petit morceau ;
+    obstacle = new THREE.CubeGeometry(250, 50, 100);
+    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
+    mesh = new THREE.Mesh(obstacle, obsMaterial);
+    mesh.position.setX(875);
     mesh.position.setY(-300);
     edges = new THREE.EdgesHelper(mesh, 0x000000);
     scene.add(mesh);
     scene.add(edges);
+
+    boxShape = new CANNON.Box(new CANNON.Vec3(125, 25, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
 
     obstacle = new THREE.CubeGeometry(50, 250, 100);
     obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
@@ -98,6 +122,11 @@ function init() {
     scene.add(mesh);
     scene.add(edges);
 
+    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
 
     obstacle = new THREE.CubeGeometry(50, 250, 100);
     obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
@@ -107,6 +136,12 @@ function init() {
     edges = new THREE.EdgesHelper(mesh, 0x000000);
     scene.add(mesh);
     scene.add(edges);
+
+    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
 
     obstacle = new THREE.CubeGeometry(250, 50, 100);
     obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
@@ -117,6 +152,12 @@ function init() {
     scene.add(mesh);
     scene.add(edges);
 
+    boxShape = new CANNON.Box(new CANNON.Vec3(125, 25, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
+
     obstacle = new THREE.CubeGeometry(50, 250, 100);
     obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
     mesh = new THREE.Mesh(obstacle, obsMaterial);
@@ -125,6 +166,11 @@ function init() {
     edges = new THREE.EdgesHelper(mesh, 0x000000);
     scene.add(mesh);
     scene.add(edges);
+
+    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
 
 
     obstacle = new THREE.CubeGeometry(50, 250, 100);
@@ -136,6 +182,11 @@ function init() {
     scene.add(mesh);
     scene.add(edges);
 
+    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
     obstacle = new THREE.CubeGeometry(250, 250, 100);
     obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
     mesh = new THREE.Mesh(obstacle, obsMaterial);
@@ -145,6 +196,11 @@ function init() {
     scene.add(mesh);
     scene.add(edges);
 
+    boxShape = new CANNON.Box(new CANNON.Vec3(125, 125, 50));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
 
     // on créé la cube et on lui applique une texture sous forme d’image
     var geometry = new THREE.CubeGeometry(window.innerWidth * 1.3, 100, 200);
@@ -152,11 +208,15 @@ function init() {
     mesh = new THREE.Mesh(geometry, material);
     mesh.position.setX(30);
     mesh.position.setY(-600);
-
     edges = new THREE.EdgesHelper(mesh, 0x000000);
-
     scene.add(mesh);
     scene.add(edges);
+
+    boxShape = new CANNON.Box(new CANNON.Vec3(window.innerWidth * 1.3 / 2, 50, 100));
+    box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+    world.add(box);
+
 
     var geometrySphere = new THREE.SphereGeometry(50, 32, 10);
     var materialSphere = new THREE.MeshBasicMaterial({color: "#2194ce"});
@@ -166,26 +226,26 @@ function init() {
 
     scene.add(sphere);
 
-    var mass = 5, radius = 50;
+    mass = 5, radius = 50;
     var sphereShape = new CANNON.Sphere(radius);
     missile = new CANNON.Body({mass: mass, shape: sphereShape});
     missile.position.copy(sphere.position);
     world.add(missile);
 
     //est-on en train de bouger la balle avec le click enfoncé ? 
-    mouseDragg=false;
-	
+    mouseDragg = false;
+
     //garde les informations X et Y au moment où l'on lance la balle
-    initialX=0;
-    initialY=0;
-	
-	/*
-    var geometry = new THREE.Geometry();
-    point =new THREE.Vector2( 600, 0 );
-    geometry.vertices.push(
-    new THREE.Vector2( -600, 0 )
+    initialX = 0;
+    initialY = 0;
 
     /*
+     var geometry = new THREE.Geometry();
+     point =new THREE.Vector2( 600, 0 );
+     geometry.vertices.push(
+     new THREE.Vector2( -600, 0 )
+
+     /*
      var geometry = new THREE.Geometry();
      point =new THREE.Vector2( 600, 0 );
      geometry.vertices.push(
@@ -208,25 +268,25 @@ function init() {
 
 
     //la balle est-elle en mouvement ?
-    onMovement=false;
-	
-	//ajout du design de la fronde
-	// Cylinder Geometry params : CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
-	var geometryPilier = new THREE.CylinderGeometry( 20, 20, 550, 16 );
-	var materialPilier = new THREE.MeshBasicMaterial( {color: 0xfff000} );
-	var cylinderPilier = new THREE.Mesh( geometryPilier, materialPilier );
-	
-	cylinderPilier.position.setX(-600);
-	cylinderPilier.position.setY(-300);
-	
-	var edgesPiller = new THREE.EdgesHelper( cylinderPilier, 0x000000 );
-	
-	scene.add( cylinderPilier );
-	scene.add( edgesPiller );
-	// ajout des evenement souris
-    document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-    document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-    document.addEventListener('mousemove',onDocumentMouseMove, false);
+    onMovement = false;
+
+    //ajout du design de la fronde
+    // Cylinder Geometry params : CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
+    var geometryPilier = new THREE.CylinderGeometry(20, 20, 550, 16);
+    var materialPilier = new THREE.MeshBasicMaterial({color: 0xfff000});
+    var cylinderPilier = new THREE.Mesh(geometryPilier, materialPilier);
+
+    cylinderPilier.position.setX(-600);
+    cylinderPilier.position.setY(-300);
+
+    var edgesPiller = new THREE.EdgesHelper(cylinderPilier, 0x000000);
+
+    scene.add(cylinderPilier);
+    scene.add(edgesPiller);
+    // ajout des evenement souris
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
+    document.addEventListener('mouseup', onDocumentMouseUp, false);
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
     // on ajoute une lumière blanche
     var lumiere = new THREE.DirectionalLight(0xffffff, 1.0);
     lumiere.position.set(0, 0, 400);
@@ -236,36 +296,32 @@ function init() {
 
 }
 
-function onDocumentMouseDown( event ) {
-	var vector = new THREE.Vector3();
-	vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-	vector.unproject( camera );
-	var dir = vector.sub( camera.position ).normalize();
-	var distance = - camera.position.z / dir.z;
-	var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-	if(pos.x>-700 && pos.x<-500 &&
-	pos.y>-100 && pos.y<100){
-	
-		mouseDragg= true;
-		
-		sphere.position.x=pos.x;
-		sphere.position.y=pos.y;
-		onMovement=false;
-		point.position.x=pos.x;
-		point.position.y=pos.y;
-	
-		line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
-		line.geometry.computeLineDistances();
-		line.geometry.lineDistancesNeedUpdate = true;
-		scene.add(line);
-		renderer.render( scene, camera );
-	}
+function onDocumentMouseDown(event) {
+    var vector = new THREE.Vector3();
+    vector.set(( event.clientX / window.innerWidth ) * 2 - 1, -(event.clientY / window.innerHeight ) * 2 + 1, 0);
+    vector.unproject(camera);
+    var dir = vector.sub(camera.position).normalize();
+    var distance = -camera.position.z / dir.z;
+    var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+    if (pos.x > -700 && pos.x < -500 && pos.y > -100 && pos.y < 100) {
+
+        mouseDragg = true;
+
+        sphere.position.x = pos.x;
+        sphere.position.y = pos.y;
+        onMovement = false;
+        point.position.x = pos.x;
+        point.position.y = pos.y;
+
+        line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
+        line.geometry.computeLineDistances();
+        line.geometry.lineDistancesNeedUpdate = true;
+        scene.add(line);
+        renderer.render(scene, camera);
+    }
 }
 
-function onDocumentMouseUp( event ) {
-	if(mouseDragg){
-		mouseDragg= false;
-
+function onDocumentMouseUp(event) {
     var vector = new THREE.Vector3();
     vector.set(( event.clientX / window.innerWidth ) * 2 - 1, -(event.clientY / window.innerHeight ) * 2 + 1, 0);
     vector.unproject(camera);
@@ -280,30 +336,33 @@ function onDocumentMouseUp( event ) {
     scene.remove(line);
     renderer.render(scene, camera);
 
-    missile.velocity = new CANNON.Vec3(speedX, speedY, 0);
+    if (mouseDragg) {
+        mouseDragg = false;
+        missile.velocity = new CANNON.Vec3(speedX, speedY, 0);
+    }
 }
 
-function onDocumentMouseMove( event ) {
-    if(mouseDragg==true){	
-	var vector = new THREE.Vector3();
-	vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-	vector.unproject( camera );
-	var dir = vector.sub( camera.position ).normalize();
-	var distance = - camera.position.z / dir.z;
-	var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-	if(pos.x<-900) {
-		pos.x=-900;
-	}else if(pos.x>-200){
-		pos.x=-200;
-	}
-	if(pos.y<-400) {
-		pos.y=-400;
-	}else if(pos.y>400){
-		pos.y=400;
-	}
-	sphere.position.x= pos.x;
-	sphere.position.y= pos.y;
-	
+function onDocumentMouseMove(event) {
+    if (mouseDragg) {
+        var vector = new THREE.Vector3();
+        vector.set(( event.clientX / window.innerWidth ) * 2 - 1, -(event.clientY / window.innerHeight ) * 2 + 1, 0);
+        vector.unproject(camera);
+        var dir = vector.sub(camera.position).normalize();
+        var distance = -camera.position.z / dir.z;
+        var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+        if (pos.x < -900) {
+            pos.x = -900;
+        } else if (pos.x > -200) {
+            pos.x = -200;
+        }
+        if (pos.y < -400) {
+            pos.y = -400;
+        } else if (pos.y > 400) {
+            pos.y = 400;
+        }
+        sphere.position.x = pos.x;
+        sphere.position.y = pos.y;
+
         missile.position.x = pos.x;
         missile.position.y = pos.y;
 
@@ -319,13 +378,13 @@ function animate() {
     if (onMovement) {
         updatePhysics();
         /*
-        var oldX = sphere.position.x;
-        var oldY = sphere.position.y;
+         var oldX = sphere.position.x;
+         var oldY = sphere.position.y;
 
-        sphere.position.x = oldX + speedX;
+         sphere.position.x = oldX + speedX;
 
-        sphere.position.y = oldY + speedY;
-        */
+         sphere.position.y = oldY + speedY;
+         */
     }
     renderer.render(scene, camera);
 }
@@ -334,5 +393,3 @@ function updatePhysics() {
     world.step(timeStep);
     sphere.position.copy(missile.position);
 }
-
-
