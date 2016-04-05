@@ -43,6 +43,9 @@ function TRAJECTORY(scene, gravity, timeStep, pointNumber) {
         scene.add(trajectory);
     }
 
+    module.hide = function () {
+        scene.remove(trajectory);
+    }
 
     function createPointArray(gravity, timeStep, pointNumber) {
         var pointArray = [];

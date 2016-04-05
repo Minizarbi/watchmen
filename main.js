@@ -1,5 +1,6 @@
 var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY, mouseDragg, line, onMovement, point;
 var missile, timeStep, gravity, world;
+var trajectory;
 
 init();
 animate();
@@ -292,6 +293,8 @@ function init() {
     lumiere.position.set(0, 0, 400);
     scene.add(lumiere);
 
+    trajectory = TRAJECTORY(scene, gravity, timeStep, 120);
+
     renderer.render(scene, camera);
 
 }
@@ -309,9 +312,12 @@ function onDocumentMouseDown(event) {
 
         sphere.position.x = pos.x;
         sphere.position.y = pos.y;
+        trajectory.setOrigPoint(pos);
         onMovement = false;
+        /*
         point.position.x = pos.x;
         point.position.y = pos.y;
+        */
 
         line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
         line.geometry.computeLineDistances();
@@ -333,6 +339,7 @@ function onDocumentMouseUp(event) {
     speedX = (-600 - initialX) * 5;
     speedY = (0 - initialY) * 5;
     onMovement = true;
+
     scene.remove(line);
     renderer.render(scene, camera);
 
@@ -365,6 +372,13 @@ function onDocumentMouseMove(event) {
 
         missile.position.x = pos.x;
         missile.position.y = pos.y;
+
+        speedX = (-600 - pos.x) * 5;
+        speedY = (0 - pos.y) * 5;
+
+        trajectory.setOrigPoint(pos.x, pos.y, 0);
+        trajectory.setOrigSpeed(speedX, speedY, 0);
+        trajectory.changeTrajectory();
 
         line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
         line.geometry.computeLineDistances();
