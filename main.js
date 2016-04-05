@@ -211,43 +211,49 @@ function init(){
 }
 
 function onDocumentMouseDown( event ) {
-    mouseDragg= true;
-    var vector = new THREE.Vector3();
-    vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-    vector.unproject( camera );
-    var dir = vector.sub( camera.position ).normalize();
-    var distance = - camera.position.z / dir.z;
-    var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-    sphere.position.x=pos.x;
-    sphere.position.y=pos.y;
-    onMovement=false;
-    point.position.x=pos.x;
-    point.position.y=pos.y;
+	var vector = new THREE.Vector3();
+	vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
+	vector.unproject( camera );
+	var dir = vector.sub( camera.position ).normalize();
+	var distance = - camera.position.z / dir.z;
+	var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
+	if(pos.x>-700 && pos.x<-500 &&
+	pos.y>-100 && pos.y<100){
 	
-	line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
-    line.geometry.computeLineDistances();
-    line.geometry.lineDistancesNeedUpdate = true;
-	scene.add(line);
-	renderer.render( scene, camera );
+		mouseDragg= true;
+		
+		sphere.position.x=pos.x;
+		sphere.position.y=pos.y;
+		onMovement=false;
+		point.position.x=pos.x;
+		point.position.y=pos.y;
+	
+		line.geometry.vertices[0].set(point.position.x,point.position.y,0); 
+		line.geometry.computeLineDistances();
+		line.geometry.lineDistancesNeedUpdate = true;
+		scene.add(line);
+		renderer.render( scene, camera );
+	}
 }
 
 function onDocumentMouseUp( event ) {
-    mouseDragg= false;
+	if(mouseDragg){
+		mouseDragg= false;
 
-    var vector = new THREE.Vector3();
-    vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
-    vector.unproject( camera );
-    var dir = vector.sub( camera.position ).normalize();
-    var distance = - camera.position.z / dir.z;
-    var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-    initialX=pos.x;
-    initialY=pos.y;
-    speedX=(-600-initialX)/20;
-    speedY=(0-initialY)/20;
-    onMovement=true;
-	scene.remove(line);
-	renderer.render( scene, camera );
-
+		var vector = new THREE.Vector3();
+		vector.set(( event.clientX / window.innerWidth ) * 2 - 1,-(event.clientY / window.innerHeight ) * 2 + 1,0 );
+		vector.unproject( camera );
+		var dir = vector.sub( camera.position ).normalize();
+		var distance = - camera.position.z / dir.z;
+		var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
+		initialX=pos.x;
+		initialY=pos.y;
+		speedX=(-600-initialX)/20;
+		speedY=(0-initialY)/20;
+		onMovement=true;
+		scene.remove(line);
+		renderer.render( scene, camera );
+	}
 }
 
 function onDocumentMouseMove( event ) {
@@ -258,7 +264,16 @@ function onDocumentMouseMove( event ) {
 	var dir = vector.sub( camera.position ).normalize();
 	var distance = - camera.position.z / dir.z;
 	var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-
+	if(pos.x<-900) {
+		pos.x=-900;
+	}else if(pos.x>-200){
+		pos.x=-200;
+	}
+	if(pos.y<-400) {
+		pos.y=-400;
+	}else if(pos.y>400){
+		pos.y=400;
+	}
 	sphere.position.x= pos.x;
 	sphere.position.y= pos.y;
 	
