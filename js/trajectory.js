@@ -1,4 +1,4 @@
-function TRAJECTORY(scene, gravity, timeStep, pointNumber) {
+function TRAJECTORY(scene, gravity, timeStep, pointNumber, material) {
     var module = {};
 
     var trajectory;
@@ -31,13 +31,6 @@ function TRAJECTORY(scene, gravity, timeStep, pointNumber) {
         var geometry = new THREE.Geometry();
         geometry.vertices = curve.getPoints(60);
         geometry.computeLineDistances();
-        var material = new THREE.LineDashedMaterial({
-            color: 0xffffff,
-            linewidth: 2,
-            scale: 5,
-            dashSize: 1,
-            gapSize: 0.5
-        });
         trajectory = new THREE.Line(geometry, material);
 
         scene.add(trajectory);

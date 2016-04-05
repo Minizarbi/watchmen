@@ -293,7 +293,15 @@ function init() {
     lumiere.position.set(0, 0, 400);
     scene.add(lumiere);
 
-    trajectory = TRAJECTORY(scene, gravity, timeStep, 120);
+
+    var material = new THREE.LineDashedMaterial({
+        color: 0x663300,
+        linewidth: 2,
+        scale: 1,
+        dashSize: 20,
+        gapSize: 20
+    });
+    trajectory = TRAJECTORY(scene, gravity, timeStep, 120, material);
 
     renderer.render(scene, camera);
 
@@ -305,7 +313,7 @@ function onDocumentMouseDown(event) {
     vector.unproject(camera);
     var dir = vector.sub(camera.position).normalize();
     var distance = -camera.position.z / dir.z;
-    var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+    pos = camera.position.clone().add(dir.multiplyScalar(distance));
     if (pos.x > -700 && pos.x < -500 && pos.y > -100 && pos.y < 100) {
 
         mouseDragg = true;
@@ -333,11 +341,9 @@ function onDocumentMouseUp(event) {
     vector.unproject(camera);
     var dir = vector.sub(camera.position).normalize();
     var distance = -camera.position.z / dir.z;
-    var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-    initialX = pos.x;
-    initialY = pos.y;
-    speedX = (-600 - initialX) * 5;
-    speedY = (0 - initialY) * 5;
+    //var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+    speedX = (-600 - pos.x) * 5;
+    speedY = (0 - pos.y) * 5;
     onMovement = true;
 
     scene.remove(line);
@@ -356,7 +362,7 @@ function onDocumentMouseMove(event) {
         vector.unproject(camera);
         var dir = vector.sub(camera.position).normalize();
         var distance = -camera.position.z / dir.z;
-        var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+        pos = camera.position.clone().add(dir.multiplyScalar(distance));
         if (pos.x < -900) {
             pos.x = -900;
         } else if (pos.x > -200) {
