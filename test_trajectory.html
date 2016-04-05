@@ -1,17 +1,59 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset=utf-8>
-		<title>Page to test catapult</title>
-		<style>
-			* { margin: 0; padding: 0 }
-			canvas { width: 100%; height: 100% }
-		</style>
-	</head>
-	<body>
-		<input id="originSpeedX" type="range" min="0" max="10" value="5" step="0.1">
-		<input id="originSpeedY" type="range" min="0" max="10" value="5" step="0.1">
-		<script src="js/three.min.js"></script>
-		<script src="js/trajectory.js"></script>
-	</body>
+<head>
+    <meta charset=utf-8>
+    <title>Page to test catapult</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<input id="originSpeedX" type="range" min="0" max="10" value="5" step="0.1">
+<input id="originSpeedY" type="range" min="0" max="10" value="5" step="0.1">
+<script src="js/three.min.js"></script>
+<script src="js/trajectory.js"></script>
+<script>
+    var scene = new THREE.Scene();
+
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var gravity = -10;
+    var timeStep = 1.0 / 10.0;
+    var pointNumber = 10;
+
+    trajectory = TRAJECTORY(scene, gravity, timeStep, pointNumber);
+
+    var originSpeedX = document.getElementById("originSpeedX");
+    var originSpeedY = document.getElementById("originSpeedY");
+    originSpeedX.addEventListener("input", function (e) {
+        trajectory.setOrigSpeed(originSpeedX.valueAsNumber, originSpeedY.valueAsNumber, 0);
+        trajectory.changeTrajectory();
+    });
+    originSpeedY.addEventListener("input", function (e) {
+        trajectory.setOrigSpeed(originSpeedX.valueAsNumber, originSpeedY.valueAsNumber, 0)
+        trajectory.changeTrajectory();
+    });
+
+    trajectory.setOrigSpeed(originSpeedX.valueAsNumber, originSpeedY.valueAsNumber, 0);
+    trajectory.changeTrajectory();
+
+    (function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    })();
+</script>
+</body>
 </html>
