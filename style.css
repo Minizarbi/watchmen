@@ -8,6 +8,10 @@ p {
 
 
 button{
+	-webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
 	margin:5px;
 	border : none;
 	height : 110px;
@@ -17,6 +21,7 @@ button{
 	text-align:middle;
 	background-image:url(bouton.png);
  }
+
  
  a.button{
 	-webkit-appearance: button;

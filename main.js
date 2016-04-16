@@ -14,7 +14,7 @@ function init() {
 
     /* Use default algorithm to compute collisions */
     world.broadphase = new CANNON.NaiveBroadphase();
-
+	var mass;
     /* Time step in seconds */
     timeStep = 1.0 / 60.0;
 
@@ -26,212 +26,16 @@ function init() {
     renderer.setSize(window.innerWidth * 0.98, window.innerHeight * 0.85);
     document.getElementById('container').appendChild(renderer.domElement);
     renderer.setClearColor(0xcef0f9, 1);
+	
     // on initialise la scène
     scene = new THREE.Scene();
 
-    // on initialise la camera que l’on place ensuite sur la scène
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(0, 0, 1500);
-    scene.add(camera);
-    container = document.createElement('div');
-    document.body.appendChild(container);
+    camera = makeCamera();
+	
+	var infoLvl = makeInfoLevel();
+	var infoScore = makeScore();
 
-    //création afficheur lvl
-    var infoLvl = document.createElement('div');
-    infoLvl.style.position = 'absolute';
-    infoLvl.style.top = '10px';
-    infoLvl.style.width = '100%';
-    infoLvl.style.textAlign = 'left';
-    infoLvl.style.fontSize = '25px';
-    infoLvl.innerHTML = 'Level 1';
-    container.appendChild(infoLvl);
-
-    //création afficheur Score
-    var infoScore = document.createElement('div');
-    infoScore.style.position = 'absolute';
-    infoScore.style.top = '10px';
-    infoScore.style.right = '30px';
-    infoScore.style.width = '100%';
-    infoScore.style.textAlign = 'right';
-    infoScore.style.fontSize = '25px';
-    infoScore.innerHTML = 'Score : 0';
-    container.appendChild(infoScore);
-
-
-    // définition d'un obstacle en bois
-    var edges;
-    var obstacle = new THREE.CubeGeometry(250, 250, 100);
-    var obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(60);
-    mesh.position.setY(-400);
-    scene.add(mesh);
-
-    var mass = 0;
-    var boxShape = new CANNON.Box(new CANNON.Vec3(125, 125, 125));
-    var box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(250, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(325);
-    mesh.position.setY(-400);
-    scene.add(mesh);
-
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(250, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(625);
-    mesh.position.setY(-400);
-    scene.add(mesh);
-
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    // définition d'un obstacle en petit morceau ;
-    obstacle = new THREE.CubeGeometry(250, 50, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(875);
-    mesh.position.setY(-300);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(125, 25, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(50, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(775);
-    mesh.position.setY(-400);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(50, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(975);
-    mesh.position.setY(-150);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(250, 50, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(875);
-    mesh.position.setY(-50);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(125, 25, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(50, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(775);
-    mesh.position.setY(-150);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    obstacle = new THREE.CubeGeometry(50, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({color: "#ce873e"});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(975);
-    mesh.position.setY(-400);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(25, 125, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-    obstacle = new THREE.CubeGeometry(250, 250, 100);
-    obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('bois.jpeg')});
-    mesh = new THREE.Mesh(obstacle, obsMaterial);
-    mesh.position.setX(625);
-    mesh.position.setY(-150);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(125, 125, 50));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    // on créé la cube et on lui applique une texture sous forme d’image
-    var geometry = new THREE.CubeGeometry(window.innerWidth * 1.3, 100, 200);
-    var material = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('texture-herbe.png')});
-    mesh = new THREE.Mesh(geometry, material);
-    mesh.position.setX(30);
-    mesh.position.setY(-600);
-    edges = new THREE.EdgesHelper(mesh, 0x000000);
-    scene.add(mesh);
-    scene.add(edges);
-
-    boxShape = new CANNON.Box(new CANNON.Vec3(window.innerWidth * 1.3 / 2, 50, 100));
-    box = new CANNON.Body({mass: mass, shape: boxShape});
-    box.position.copy(mesh.position);
-    world.add(box);
-
-
-    var geometrySphere = new THREE.SphereGeometry(50, 32, 10);
-    var materialSphere = new THREE.MeshBasicMaterial({color: "#2194ce"});
-    sphere = new THREE.Mesh(geometrySphere, materialSphere);
-    sphere.position.setX(-600);
-    sphere.position.setY(0);
-
-    scene.add(sphere);
-
-    mass = 5, radius = 50;
-    var sphereShape = new CANNON.Sphere(radius);
-    missile = new CANNON.Body({mass: mass, shape: sphereShape});
-    missile.position.copy(sphere.position);
-    world.add(missile);
+	initLevel(1, scene,world);
 
     //est-on en train de bouger la balle avec le click enfoncé ? 
     mouseDragg = false;
@@ -240,50 +44,11 @@ function init() {
     initialX = 0;
     initialY = 0;
 
-    /*
-     var geometry = new THREE.Geometry();
-     point =new THREE.Vector2( 600, 0 );
-     geometry.vertices.push(
-     new THREE.Vector2( -600, 0 )
-
-     /*
-     var geometry = new THREE.Geometry();
-     point =new THREE.Vector2( 600, 0 );
-     geometry.vertices.push(
-     new THREE.Vector2( -600, 0 )
-
-     );
-     geometry.vertices.push(point);
-     geometry.computeLineDistances();
-     var lineMaterial = new THREE.LineBasicMaterial({color: 0x000000, linewidth: 2 });
-     line = new THREE.Line( geometry,  material );
-     scene.add(line);*/
-    /*
-     var lineGeometry = new THREE.Geometry();
-     var vertArray = lineGeometry.vertices;
-     vertArray.push( new THREE.Vector3(-600,0,0), new THREE.Vector3(0, 0, 0) );
-     lineGeometry.computeLineDistances();
-     var lineMaterial = new THREE.LineDashedMaterial( { color: 0x000000, dashSize: 2, gapSize: 2 } );
-     line = new THREE.Line( lineGeometry, lineMaterial );
-     scene.add(line);*/
-
-
     //la balle est-elle en mouvement ?
     onMovement = false;
 
     //ajout du design de la fronde
-    // Cylinder Geometry params : CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
-    var geometryPilier = new THREE.CylinderGeometry(20, 20, 550, 16);
-    var materialPilier = new THREE.MeshBasicMaterial({color: 0xfff000});
-    var cylinderPilier = new THREE.Mesh(geometryPilier, materialPilier);
-
-    cylinderPilier.position.setX(-600);
-    cylinderPilier.position.setY(-300);
-
-    var edgesPiller = new THREE.EdgesHelper(cylinderPilier, 0x000000);
-
-    scene.add(cylinderPilier);
-    scene.add(edgesPiller);
+    makeSupportProjectile(scene, world);
     // ajout des evenement souris
     document.addEventListener('mousedown', onDocumentMouseDown, false);
     document.addEventListener('mouseup', onDocumentMouseUp, false);
@@ -327,10 +92,7 @@ function onDocumentMouseDown(event) {
         point.position.y = pos.y;
         */
 
-        line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
-        line.geometry.computeLineDistances();
-        line.geometry.lineDistancesNeedUpdate = true;
-        scene.add(line);
+        
         renderer.render(scene, camera);
     }
 }
@@ -386,9 +148,6 @@ function onDocumentMouseMove(event) {
         trajectory.setOrigSpeed(speedX, speedY, 0);
         trajectory.changeTrajectory();
 
-        line.geometry.vertices[0].set(point.position.x, point.position.y, 0);
-        line.geometry.computeLineDistances();
-        line.geometry.lineDistancesNeedUpdate = true;
         renderer.render(scene, camera);
     }
 }
@@ -397,14 +156,6 @@ function animate() {
     requestAnimationFrame(animate);
     if (onMovement) {
         updatePhysics();
-        /*
-         var oldX = sphere.position.x;
-         var oldY = sphere.position.y;
-
-         sphere.position.x = oldX + speedX;
-
-         sphere.position.y = oldY + speedY;
-         */
     }
     renderer.render(scene, camera);
 }
