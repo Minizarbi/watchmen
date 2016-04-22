@@ -1,6 +1,9 @@
 var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY, mouseDragg, line, onMovement, point;
 var missile, timeStep, gravity, world;
 var trajectory;
+var anime=true;
+var level = 1;
+var score = 0;
 
 init();
 animate();
@@ -35,7 +38,7 @@ function init() {
 	var infoLvl = makeInfoLevel();
 	var infoScore = makeScore();
 
-	initLevel(1, scene,world);
+	initLevel(level, scene,world);
 
     //est-on en train de bouger la balle avec le click enfoncé ? 
     mouseDragg = false;
@@ -47,8 +50,7 @@ function init() {
     //la balle est-elle en mouvement ?
     onMovement = false;
 
-    //ajout du design de la fronde
-    makeSupportProjectile(scene, world);
+    
     // ajout des evenement souris
     document.addEventListener('mousedown', onDocumentMouseDown, false);
     document.addEventListener('mouseup', onDocumentMouseUp, false);
@@ -153,14 +155,38 @@ function onDocumentMouseMove(event) {
 }
 
 function animate() {
-    requestAnimationFrame(animate);
-    if (onMovement) {
-        updatePhysics();
-    }
-    renderer.render(scene, camera);
+	
+	requestAnimationFrame(animate);
+	if(anime){
+		if (onMovement) {
+			updatePhysics();
+		}
+	
+		renderer.render(scene, camera);
+	}
 }
 
 function updatePhysics() {
     world.step(timeStep);
     sphere.position.copy(missile.position);
+}
+
+function save() {
+	var file = new ActiveXObject("Scripting.FileSystemObject");
+	var a = file.CreateTextFile("c:\Desktop\avancement.txt", true);
+	a.WriteLine(level+score);
+	a.Close();
+}
+
+function load(){
+
+	var fileSystem=new ActiveXObject("Scripting.FileSystemObject");
+	var monfichier=fileSystem.OpenTextFile("c:\Desktop\avancement.txt", 1 ,true);
+	level = monfichier.Read(1);
+	var all = monfichier.ReadAll();
+	score = all.substr(1, all.length-2);
+	initLevel(level, scene,world);
+	infoScore=makeScore();
+	monFichier.Close();
+
 }

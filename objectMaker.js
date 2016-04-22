@@ -23,7 +23,7 @@ function makeScore(){
     infoScore.style.width = '100%';
     infoScore.style.textAlign = 'right';
     infoScore.style.fontSize = '25px';
-    infoScore.innerHTML = 'Score : 0';
+    infoScore.innerHTML = 'Score : '+score;
     container.appendChild(infoScore);
 	
 	return infoScore;

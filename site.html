@@ -21,7 +21,7 @@
 <script type="text/javascript"> 
 $(document).ready(function()
 { 
-    $("#id-popup").modal("hide");// affiche la popup au chargement de la page
+    $("#id-popup").modal("show");// affiche la popup au chargement de la page
 }); 
 
 function action(){
@@ -92,8 +92,15 @@ footer{
           
           <!-- le contenu HTML de la popup --> 
           <div class="modal-body"> 
-          <p class="lead"> Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. </p> 
-          <p>Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker</p> 
+          <p class="lead"> Tutoriel d'aide n°1 </p> 
+          <p>Bienvenu sur le jeu Super Science. 
+		  Nous avons pour but de vous faire découvrir les bienfaits des lois de la physique. Pour commencer voici un jeu simple de lancer où le but sera de détruire les ennemis à l'écran. 
+		  Cliquez sur la balle située sur la fronde et tirez sur le fil puis relachez pour que celle-ci s'envole.
+		  Lorsque vous cliquez sur la balle une trajectoire s'affichera. </p> 
+		  <p> 
+		  Interet : 
+		  Chacun de vos tirs demandera que vous sachiez doser la puissance de vos tirs tout en étant attentif à la gravité. 
+		  Ne prenez pas la trajectoire et la gravité pour acquise, on ne sait jamais ce qui pourrait changer pour les prochains niveaux ;-)</p> 
           </div>
           
           <!-- le pied de page de la popup --> 
@@ -116,13 +123,14 @@ footer{
 
         <div id="menu">
             <button id="level">Level</button>
-            <button id="pause">Pause</button>
-            <button id="retry">Retry</button>
+            <button id="pause" onClick="if(anime) {anime=false;} else {anime=true;}">Pause</button>
+            <button id="retry" onClick="initLevel(level, scene,world);">Retry</button>
 			<button id="help" data-toggle="modal" data-target="#id-popup"> Help</button>
 			
 			<!-- lien de téléchargement -->
-			
-			<a href="data:text/plain;charset=UTF-8,Score : 2" download="le_fichier.txt" id="boutonBlue" class="btn btn-default">Le fichier</a>
+			<button id="save" onClick="save();"> Enregistrer </button>
+			<a href="data:text/plain;charset=UTF-8,Score : 2" download="AvancementSuperSciences.txt" id="boutonBlue" class="btn btn-default">Enregistrer</a>
+			<a id="boutonBlue" class="btn btn-default">Charger</a>
 		</div>
 		
         

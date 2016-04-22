@@ -1,5 +1,17 @@
 function initLevel(numberLevel, scene,  world){
-
+	for ( i = scene.children.length - 1; i >= 0 ; i -- ) {
+        obj = scene.children[ i ];
+        scene.remove(obj);
+	}
+	
+	for ( i = world.bodies.length - 1; i >= 0 ; i -- ) {
+        obj = world.bodies[ i ];
+        world.remove(obj);
+	}
+	
+	//ajout du design de la fronde
+    makeSupportProjectile(scene, world);
+                
 	switch(numberLevel){
 		case 1 : 
 			initLevelOne(scene,world);
