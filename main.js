@@ -1,10 +1,12 @@
 var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY, mouseDragg, line, onMovement, point;
 var missile, timeStep, gravity, world;
 var trajectory;
-var enemies;
+var enemiesM, enemiesE,enemiesB;
 var anime=true;
 var level = 1;
 var score = 0;
+var infoScore;
+var infoLvl;
 
 init();
 animate();
@@ -90,12 +92,7 @@ function onDocumentMouseDown(event) {
         sphere.position.y = pos.y;
         trajectory.setOrigPoint(pos);
         onMovement = false;
-        /*
-        point.position.x = pos.x;
-        point.position.y = pos.y;
-        */
 
-        
         renderer.render(scene, camera);
     }
 }
@@ -162,7 +159,10 @@ function animate() {
 		if (onMovement) {
 			updatePhysics();
 		}
-	
+		for(var i in enemiesM){
+			enemiesM[i].rotation.y -= 0.05;
+			enemiesE[i].rotation.y -= 0.05;
+		}
 		renderer.render(scene, camera);
 	}
 }

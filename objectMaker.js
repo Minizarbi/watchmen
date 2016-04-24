@@ -1,7 +1,7 @@
 //création afficheur Level
 function makeInfoLevel(){
 
-	var infoLvl = document.createElement('div');
+	infoLvl = document.createElement('div');
     infoLvl.style.position = 'absolute';
     infoLvl.style.top = '10px';
     infoLvl.style.width = '100%';
@@ -16,7 +16,7 @@ function makeInfoLevel(){
 //création afficheur Score
 function makeScore(){
 
-	var infoScore = document.createElement('div');
+	infoScore = document.createElement('div');
     infoScore.style.position = 'absolute';
     infoScore.style.top = '10px';
     infoScore.style.right = '30px';
@@ -148,39 +148,45 @@ function makeObstacleTexture(scene, world, height, width, posX, posY, texture){
 	
 }
 
-function makeEnemy(scene, world, height, width, posX, posY, color, enemies){
+
+function makeEnemy(scene, world, height, width, posX, posY, color, enemiesM,enemiesE,enemiesB,numEnemy){
 
 	var mass = 0;
-	var enemy = new THREE.CubeGeometry(height, width, 100);
-    var enemyMaterial ;
-	
-	enemyMaterial= new THREE.MeshBasicMaterial({color: color});
+	//var enemy = new THREE.CubeGeometry( height, width, 100 );
+	var enemy = new THREE.CylinderGeometry( 0, width, height, 4, 1 );
+
+	var enemyMaterial= new THREE.MeshBasicMaterial({color: color});
     
 	var mesh = new THREE.Mesh(enemy, enemyMaterial);
     mesh.position.setX(posX);
     mesh.position.setY(posY);
+	
     var edges = new THREE.EdgesHelper(mesh, 0x000000);
     scene.add(mesh);
     scene.add(edges);
-
+	
+	
+	
     var boxShape = new CANNON.Box(new CANNON.Vec3(height/2, width/2, 50));
 	boxShape.collisionResponse =true;
     var box = new CANNON.Body({mass: mass, shape: boxShape});
     box.position.copy(mesh.position);
-	box.addEventListener('collide', function(obj){ 
-	scene.remove(enemies[box][0]);
-	scene.remove(enemies[box][1]);
-	 world.remove(this);
-	 });
+	
+	box.addEventListener('collide', function(event){ 
+		for(var i in enemiesB){
+			if(enemiesB[i].position.x==this.position.x && enemiesB[i].position.y==this.position.y){
+				scene.remove(enemiesM[i]);
+				scene.remove(enemiesE[i]);
+				score+=100;
+				infoScore.innerHTML = 'Score : '+score;
+				world.remove(this); 
+			}
+		}
+	});
+	enemiesM[numEnemy]=mesh;
+	enemiesE[numEnemy]=edges;
+	enemiesB[numEnemy]=box;
+	numEnemy++;
     world.add(box);
-	enemies[box]=[mesh,edges];
-	return [box,mesh];
-	
-	
-}
-
-function onCollide() {
-
-	
-
+	return numEnemy;
 }
