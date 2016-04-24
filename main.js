@@ -11,7 +11,7 @@ animate();
 
 function init() {
     gravity = -1000;
-
+	
     /* Create world with gravity */
     world = new CANNON.World();
     world.gravity.set(0, gravity, 0);

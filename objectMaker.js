@@ -167,9 +167,13 @@ function makeEnemy(scene, world, height, width, posX, posY, color, enemies){
 	boxShape.collisionResponse =true;
     var box = new CANNON.Body({mass: mass, shape: boxShape});
     box.position.copy(mesh.position);
-	box.addEventListener('collide', onCollide);
+	box.addEventListener('collide', function(obj){ 
+	scene.remove(enemies[box][0]);
+	scene.remove(enemies[box][1]);
+	 world.remove(this);
+	 });
     world.add(box);
-	enemies.push([box,mesh]);
+	enemies[box]=[mesh,edges];
 	return [box,mesh];
 	
 	
@@ -177,6 +181,6 @@ function makeEnemy(scene, world, height, width, posX, posY, color, enemies){
 
 function onCollide() {
 
-
+	
 
 }
