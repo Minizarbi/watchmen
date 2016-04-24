@@ -1,6 +1,7 @@
 var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY, mouseDragg, line, onMovement, point;
 var missile, timeStep, gravity, world;
 var trajectory;
+var enemies;
 var anime=true;
 var level = 1;
 var score = 0;

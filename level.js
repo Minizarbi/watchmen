@@ -28,7 +28,7 @@ function initLevelOne( scene, world){
 
 	var mesh;
 	var edges;
-   
+	
 	makeObstacleTexture(scene, world, 250, 250, 60, -400, 'bois.jpeg');
 
 	makeObstacleTexture(scene, world, 250, 250, 325, -400, 'bois.jpeg');
@@ -48,9 +48,10 @@ function initLevelOne( scene, world){
 	makeObstacleColor(scene, world, 50, 250, 775, -150, "#ce873e");
 
 	makeObstacleColor(scene, world, 50, 250, 975, -400, "#ce873e");
-
-    
+  
 	makeObstacleTexture(scene, world, 250, 250, 625, -150, 'bois.jpeg');
+	
+	makeEnemy(scene, world, 20, 20, 625, 75, "#ce113e");
 
     // on créé la cube et on lui applique une texture sous forme d’image
     makeFloor(scene, world);

@@ -104,7 +104,7 @@ function makeSupportProjectile(scene, world){
 function makeObstacleColor(scene, world, height, width, posX, posY, color){
 	var mass = 0;
 	var obstacle = new THREE.CubeGeometry(height, width, 100);
-    var obsMaterial 
+    var obsMaterial ;
 	
 	obsMaterial= new THREE.MeshBasicMaterial({color: color});
     
@@ -128,7 +128,7 @@ function makeObstacleColor(scene, world, height, width, posX, posY, color){
 function makeObstacleTexture(scene, world, height, width, posX, posY, texture){
 	var mass = 0;
 	var obstacle = new THREE.CubeGeometry(height, width, 100);
-    var obsMaterial 
+    var obsMaterial ;
 
 	obsMaterial = new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture(texture)});
 	
@@ -146,4 +146,37 @@ function makeObstacleTexture(scene, world, height, width, posX, posY, texture){
 	
 	return obstacle;
 	
+}
+
+function makeEnemy(scene, world, height, width, posX, posY, color, enemies){
+
+	var mass = 0;
+	var enemy = new THREE.CubeGeometry(height, width, 100);
+    var enemyMaterial ;
+	
+	enemyMaterial= new THREE.MeshBasicMaterial({color: color});
+    
+	var mesh = new THREE.Mesh(enemy, enemyMaterial);
+    mesh.position.setX(posX);
+    mesh.position.setY(posY);
+    var edges = new THREE.EdgesHelper(mesh, 0x000000);
+    scene.add(mesh);
+    scene.add(edges);
+
+    var boxShape = new CANNON.Box(new CANNON.Vec3(height/2, width/2, 50));
+	boxShape.collisionResponse =true;
+    var box = new CANNON.Body({mass: mass, shape: boxShape});
+    box.position.copy(mesh.position);
+	box.addEventListener('collide', onCollide);
+    world.add(box);
+	enemies.push([box,mesh]);
+	return [box,mesh];
+	
+	
+}
+
+function onCollide() {
+
+
+
 }
