@@ -115,6 +115,8 @@ function onDocumentMouseUp(event) {
         mouseDragg = false;
         missile.velocity = new CANNON.Vec3(speedX, speedY, 0);
     }
+
+    trajectory.hide();
 }
 
 function onDocumentMouseMove(event) {
