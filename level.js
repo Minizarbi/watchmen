@@ -17,6 +17,7 @@ function initLevel(numberLevel, scene,  world){
 			initLevelOne(scene,world);
 			break;
 		default :
+			initLevelTwo(scene,world);
 			break;
 	}
 
@@ -65,5 +66,9 @@ function initLevelOne( scene, world){
     makeFloor(scene, world);
 
 	missile = makeProjectile(scene, world);
+
+}
+
+function initLevelTwo(scene,world){
 
 }

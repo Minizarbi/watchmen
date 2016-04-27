@@ -163,6 +163,9 @@ function animate() {
 			enemiesM[i].rotation.y -= 0.05;
 			enemiesE[i].rotation.y -= 0.05;
 		}
+		if(enemiesM.length==0){
+			initLevel
+		}
 		renderer.render(scene, camera);
 	}
 }
