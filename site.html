@@ -124,15 +124,15 @@ footer{
         <div id="score"></div>
 
         <div id="menu">
-            <button id="level">Level</button>
-            <button id="pause" onClick="if(anime) {anime=false;} else {anime=true;}">Pause</button>
-            <button id="retry" onClick="initLevel(level, scene,world);">Retry</button>
-			<button id="help" data-toggle="modal" data-target="#id-popup"> Help</button>
+            <button id="level" class="btn btn-primary btn-lg">Level</button>
+            <button id="pause" onClick="if(anime) {anime=false;} else {anime=true;}" class="btn btn-primary btn-lg">Pause</button>
+            <button id="retry" onClick="initLevel(level, scene,world);" class="btn btn-primary btn-lg">Retry</button>
+			<button id="help" data-toggle="modal" data-target="#id-popup" class="btn btn-primary btn-lg"> Help</button>
 			
 			<!-- lien de téléchargement -->
-			<button id="save" onClick="save();"> Enregistrer </button>
-			<a href="data:text/plain;charset=UTF-8,Score : 2" download="AvancementSuperSciences.txt" id="boutonBlue" class="btn btn-default">Enregistrer</a>
-			<a id="boutonBlue" class="btn btn-default">Charger</a>
+			<button id="save" onClick="save();" class="btn btn-primary btn-lg">Enregistrer</button>
+			<a href="data:text/plain;charset=UTF-8,Score : 2" download="AvancementSuperSciences.txt" id="boutonBlue" class="btn btn-primary btn-lg">Enregistrer</a>
+			<a id="boutonBlue" class="btn btn-primary btn-lg">Charger</a>
 		</div>
 		
         
