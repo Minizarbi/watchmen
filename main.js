@@ -1,7 +1,7 @@
 var renderer, scene, camera, mesh, sphere, speedX, speedY, initialX, initialY, mouseDragg, line, onMovement, point;
 var missile, timeStep, gravity, world;
 var trajectory;
-var enemiesM, enemiesE,enemiesB;
+var enemies;
 var anime=true;
 var level = 1;
 var score = 0;
@@ -161,12 +161,13 @@ function animate() {
 		if (onMovement) {
 			updatePhysics();
 		}
-		for(var i in enemiesM){
-			enemiesM[i].rotation.y -= 0.05;
-			enemiesE[i].rotation.y -= 0.05;
+		for(var i in enemies){
+			enemies[i].mesh.rotation.y -= 0.05;
+			enemies[i].edges.rotation.y -= 0.05;
 		}
-		if(enemiesM.length==0){
-			initLevel
+		if(enemies.length==0){
+			//initLevel
+            console.log("Level finished");
 		}
 		renderer.render(scene, camera);
 	}

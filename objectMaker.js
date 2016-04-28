@@ -149,7 +149,7 @@ function makeObstacleTexture(scene, world, height, width, posX, posY, texture){
 }
 
 
-function makeEnemy(scene, world, height, width, posX, posY, color, enemiesM,enemiesE,enemiesB,numEnemy){
+function makeEnemy(scene, world, height, width, posX, posY, color, enemies, numEnemy) {
 
 	var mass = 0;
 	//var enemy = new THREE.CubeGeometry( height, width, 100 );
@@ -178,21 +178,13 @@ function makeEnemy(scene, world, height, width, posX, posY, color, enemiesM,enem
         score+=100;
         infoScore.innerHTML = 'Score : '+score;
         world.remove(box);
-        /*
-		for(var i in enemiesB){
-			if(enemiesB[i].position.x==this.position.x && enemiesB[i].position.y==this.position.y){
-				scene.remove(enemiesM[i]);
-				scene.remove(enemiesE[i]);
-				score+=100;
-				infoScore.innerHTML = 'Score : '+score;
-				world.remove(this); 
-			}
-		}
-		*/
+        enemies.pop(numEnemy);
 	});
-	enemiesM[numEnemy]=mesh;
-	enemiesE[numEnemy]=edges;
-	enemiesB[numEnemy]=box;
+    var e = {};
+    e.mesh = mesh;
+    e.edges = edges;
+    e.box = box;
+    enemies[numEnemy] = e;
 	numEnemy++;
     world.add(box);
 	return numEnemy;
