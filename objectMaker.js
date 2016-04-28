@@ -172,7 +172,13 @@ function makeEnemy(scene, world, height, width, posX, posY, color, enemiesM,enem
     var box = new CANNON.Body({mass: mass, shape: boxShape});
     box.position.copy(mesh.position);
 	
-	box.addEventListener('collide', function(event){ 
+	box.addEventListener('collide', function(event){
+        scene.remove(mesh);
+        scene.remove(edges);
+        score+=100;
+        infoScore.innerHTML = 'Score : '+score;
+        world.remove(box);
+        /*
 		for(var i in enemiesB){
 			if(enemiesB[i].position.x==this.position.x && enemiesB[i].position.y==this.position.y){
 				scene.remove(enemiesM[i]);
@@ -182,6 +188,7 @@ function makeEnemy(scene, world, height, width, posX, posY, color, enemiesM,enem
 				world.remove(this); 
 			}
 		}
+		*/
 	});
 	enemiesM[numEnemy]=mesh;
 	enemiesE[numEnemy]=edges;
