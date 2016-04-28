@@ -165,10 +165,6 @@ function animate() {
 			enemies[i].mesh.rotation.y -= 0.05;
 			enemies[i].edges.rotation.y -= 0.05;
 		}
-		if(enemies.length==0){
-			//initLevel
-            console.log("Level finished");
-		}
 		renderer.render(scene, camera);
 	}
 }

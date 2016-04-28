@@ -179,6 +179,10 @@ function makeEnemy(scene, world, height, width, posX, posY, color, enemies, numE
         infoScore.innerHTML = 'Score : '+score;
         world.remove(box);
         enemies.pop(numEnemy);
+
+        if(enemies.length==0){
+            console.log("Level finished");
+        }
 	});
     var e = {};
     e.mesh = mesh;
