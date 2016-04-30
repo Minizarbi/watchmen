@@ -29,7 +29,7 @@ function initLevelOne( scene, world){
 	var numEnemy=0;
 	var mesh;
 	var edges;
-	enemies=[];
+	enemies={};
 
 	makeObstacleTexture(scene, world, 250, 250, 60, -400, 'bois.jpeg');
 
